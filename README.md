@@ -1,5 +1,5 @@
 # bs4navwalker
-A custom WordPress nav walker class for Bootstrap 4 (v4.0.0-alpha.1) nav menus in a custom theme using the WordPress built in menu manager
+A custom WordPress nav walker class for Bootstrap 4 (v4.0.0-alpha.2) nav menus in a custom theme using the WordPress built in menu manager
 
 ```php
 // Register Custom Navigation Walker
