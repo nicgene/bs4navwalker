@@ -79,8 +79,10 @@ class bs4Navwalker extends Walker_Nav_Menu
         // New
         $class_names .= ' nav-item';
         
-        if (in_array('menu-item-has-children', $classes)) {
-            $class_names .= ' dropdown';
+        if( $args->depth != 1 ) {
+            if (in_array('menu-item-has-children', $classes)) {
+                $class_names .= ' dropdown';
+            }
         }
 
         if (in_array('current-menu-item', $classes)) {
@@ -125,13 +127,15 @@ class bs4Navwalker extends Walker_Nav_Menu
             $atts['class'] = 'nav-link';
         }
 
-        if ($depth === 0 && in_array('menu-item-has-children', $classes)) {
-            $atts['class']       .= ' dropdown-toggle';
-            $atts['data-toggle']  = 'dropdown';
-        }
+        if( $args->depth != 1 ) {
+            if ($depth === 0 && in_array('menu-item-has-children', $classes)) {
+                $atts['class']       .= ' dropdown-toggle';
+                $atts['data-toggle']  = 'dropdown';
+            }
 
-        if ($depth > 0) {
-            $atts['class'] = 'dropdown-item';
+            if ($depth > 0) {
+                $atts['class'] = 'dropdown-item';
+            }
         }
 
         if (in_array('current-menu-item', $item->classes)) {
