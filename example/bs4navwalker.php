@@ -3,7 +3,7 @@
 /**
  * Class Name: bs4Navwalker
  * GitHub URI: https://github.com/dupkey/bs4navwalker
- * Description: A custom WordPress nav walker class for Bootstrap 4 nav menus in a custom theme using the WordPress built in menu manager
+ * Description: A custom WordPress nav walker class for Bootstrap 4 nav menus in a custom theme using the WordPress built in menu manager.
  * License: GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  */
@@ -76,7 +76,7 @@ class bs4Navwalker extends Walker_Nav_Menu
 
         // New
         $class_names .= ' nav-item';
-
+        
         if (in_array('menu-item-has-children', $classes)) {
             $class_names .= ' dropdown';
         }
@@ -215,7 +215,7 @@ class bs4Navwalker extends Walker_Nav_Menu
      * @param array  $args   An array of arguments. @see wp_nav_menu()
      */
     public function end_el( &$output, $item, $depth = 0, $args = array() ) {
-        if (isset($args->has_children) && $depth === 0) {
+        if ($depth === 0) {
             $output .= "</li>\n";
         }
     }
