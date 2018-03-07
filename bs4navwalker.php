@@ -215,7 +215,7 @@ class bs4Navwalker extends Walker_Nav_Menu
      * @param array  $args   An array of arguments. @see wp_nav_menu()
      */
     public function end_el( &$output, $item, $depth = 0, $args = array() ) {
-        if (isset($args->has_children) && $depth === 0) {
+        if ($depth === 0) {
             $output .= "</li>\n";
         }
     }
