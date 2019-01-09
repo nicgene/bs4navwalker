@@ -125,12 +125,17 @@ class bs4Navwalker extends Walker_Nav_Menu
 
         if ($depth === 0 && in_array('menu-item-has-children', $classes)) {
             $atts['class']       .= ' dropdown-toggle';
+            $atts['class']       .= ' depth-'. $depth;
             $atts['data-toggle']  = 'dropdown';
+            $atts['href'] = '#';
+            $atts['aria-haspopup'] = 'true';
+            $atts['aria-expanded'] = 'false';
         }
 
         if ($depth > 0) {
-            $manual_class = array_values($classes)[0] .' '. 'dropdown-item';
-            $atts ['class']= $manual_class;
+            $manual_class   = array_values($classes)[0] . ' '.'dropdown-item';
+            $atts['class']  = $manual_class;
+            $atts['data-target'] = '#';
         }
 
         if (in_array('current-menu-item', $item->classes)) {
