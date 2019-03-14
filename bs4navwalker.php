@@ -61,6 +61,11 @@ class bs4Navwalker extends Walker_Nav_Menu
         $classes = empty( $item->classes ) ? array() : (array) $item->classes;
         $classes[] = 'menu-item-' . $item->ID;
 
+        $linkmod_classes = array();
+        $icon_classes    = array();
+        $classes = self::separate_linkmods_and_icons_from_classes( $classes, $linkmod_classes, $icon_classes, $depth );
+        $icon_class_string = join( ' ', $icon_classes );
+
         /**
          * Filter the CSS class(es) applied to a menu item's list item element.
          *
@@ -136,6 +141,7 @@ class bs4Navwalker extends Walker_Nav_Menu
         if (in_array('current-menu-item', $item->classes)) {
             $atts['class'] .= ' active';
         }
+
         // print_r($item);
         //
 
@@ -180,6 +186,9 @@ class bs4Navwalker extends Walker_Nav_Menu
         */
         //
         $item_output .= '<a'. $attributes .'>';
+        if ( ! empty( $icon_class_string ) ) {
+            $item_output .= '<i class="' . esc_attr( $icon_class_string ) . '" aria-hidden="true"></i> ';
+        }
         /** This filter is documented in wp-includes/post-template.php */
         $item_output .= $args->link_before . apply_filters( 'the_title', $item->title, $item->ID ) . $args->link_after;
         $item_output .= '</a>';
@@ -219,4 +228,32 @@ class bs4Navwalker extends Walker_Nav_Menu
             $output .= "</li>\n";
         }
     }
+
+    private function separate_linkmods_and_icons_from_classes( $classes, &$linkmod_classes, &$icon_classes, $depth ) {
+			// Loop through $classes array to find linkmod or icon classes.
+			foreach ( $classes as $key => $class ) {
+				// If any special classes are found, store the class in it's
+				// holder array and and unset the item from $classes.
+				if ( preg_match( '/^disabled|^sr-only/i', $class ) ) {
+					// Test for .disabled or .sr-only classes.
+					$linkmod_classes[] = $class;
+					unset( $classes[ $key ] );
+				} elseif ( preg_match( '/^dropdown-header|^dropdown-divider|^dropdown-item-text/i', $class ) && $depth > 0 ) {
+					// Test for .dropdown-header or .dropdown-divider and a
+					// depth greater than 0 - IE inside a dropdown.
+					$linkmod_classes[] = $class;
+					unset( $classes[ $key ] );
+				} elseif ( preg_match( '/^fa-(\S*)?|^fa(s|r|l|b)?(\s?)?$/i', $class ) ) {
+					// Font Awesome.
+					$icon_classes[] = $class;
+					unset( $classes[ $key ] );
+				} elseif ( preg_match( '/^glyphicon-(\S*)?|^glyphicon(\s?)$/i', $class ) ) {
+					// Glyphicons.
+					$icon_classes[] = $class;
+					unset( $classes[ $key ] );
+				}
+			}
+
+			return $classes;
+		}
 }
